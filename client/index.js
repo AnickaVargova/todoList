@@ -35,16 +35,16 @@ function transformData(data) {
 
 const ExampleComponent = () => {
   const dispatch = useDispatch();
-  // useEffect(dispatch(getData()), []);
+  useEffect(dispatch(getData), []);
   // useEffect(getData(), []);
 
-  function getData() {
-    fetch("/todos")
-      .then((response) => response.json())
-      .then((data) => {
-        setTodos(transformData(data));
-      });
-  }
+  // function getData() {
+  //   fetch("/todos")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setTodos(transformData(data));
+  //     });
+  // }
 
   // const [todos, setTodos] = useState([]);
 
