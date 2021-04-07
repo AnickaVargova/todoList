@@ -12,7 +12,10 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "react": "^17",
-    "react-dom": "^17"
+    "react-dom": "^17",
+    "react-redux": "^7.2.3",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

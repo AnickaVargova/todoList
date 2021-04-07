@@ -4,6 +4,12 @@ import Form from "./Form.js";
 import ListOfTodos from "./ListOfTodos.js";
 import "./fake-hmr";
 import styled from "styled-components";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { reducer, getData } from "./reducer.js";
+
+const store = createStore(reducer, applyMiddleware(thunk));
 
 const H1 = styled.h1`
   color: purple;
@@ -28,7 +34,9 @@ function transformData(data) {
 }
 
 const ExampleComponent = () => {
-  useEffect(getData, []);
+  const dispatch = useDispatch();
+  // useEffect(dispatch(getData()), []);
+  // useEffect(getData(), []);
 
   function getData() {
     fetch("/todos")
@@ -38,58 +46,64 @@ const ExampleComponent = () => {
       });
   }
 
-  const [todos, setTodos] = useState([]);
+  // const [todos, setTodos] = useState([]);
 
   function complete(todo) {
-    todo.completed = true;
-    setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
-    fetch("/todos", {
-      method: "POST",
-      body: JSON.stringify({
-        title: todo.name,
-        completed: todo.completed,
-      }),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .catch((err) => {
-        alert("Sorry, there was a problem while posting data.");
-        throw new Error("There was a problem posting data.");
-      });
+    dispatch({ type: "COMPLETE", payload: todo });
+    // todo.completed = true;
+    // setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
+    // fetch("/todos", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     title: todo.name,
+    //     completed: todo.completed,
+    //   }),
+    //   headers: { "Content-Type": "application/json" },
+    // })
+    //   .then((response) => response.json())
+    //   .catch((err) => {
+    //     alert("Sorry, there was a problem while posting data.");
+    //     throw new Error("There was a problem posting data.");
+    //   });
   }
 
   function handleSubmit({ name, date }) {
-    for (let todo of todos) {
-      if (todo.name === name) {
-        alert("This name is already in use. Choose another name.");
-        return;
-      }
-    }
-
-    setTodos((prevTodos) => [...prevTodos, { name, date }]);
-    fetch("/todos", {
-      method: "POST",
-      body: JSON.stringify({
-        title: name,
-        date: dateParser(date, "toServer"),
-      }),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .catch((err) => {
-        setTodos((prevtodos) => prevtodos.filter((todo) => todo.name !== name));
-        alert("Sorry, there was a problem while posting data.");
-        throw new Error("There was a problem posting data.");
-      });
+    dispatch({ type: "SUBMIT", payload: { name, date } });
+    // for (let todo of todos) {
+    //   if (todo.name === name) {
+    //     alert("This name is already in use. Choose another name.");
+    //     return;
+    //   }
+    // }
+    // setTodos((prevTodos) => [...prevTodos, { name, date }]);
+    // fetch("/todos", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     title: name,
+    //     date: dateParser(date, "toServer"),
+    //   }),
+    //   headers: { "Content-Type": "application/json" },
+    // })
+    //   .then((response) => response.json())
+    //   .catch((err) => {
+    //     setTodos((prevtodos) => prevtodos.filter((todo) => todo.name !== name));
+    //     alert("Sorry, there was a problem while posting data.");
+    //     throw new Error("There was a problem posting data.");
+    //   });
   }
 
   return (
     <div>
       <H1>Todo List</H1>
       <Form handleSubmit={handleSubmit} />
-      <ListOfTodos todos={todos} complete={complete} />
+      <ListOfTodos todos={useSelector((state) => state)} complete={complete} />
     </div>
   );
 };
 
-render(<ExampleComponent />, document.getElementById("app"));
+render(
+  <Provider store={store}>
+    <ExampleComponent />
+  </Provider>,
+  document.getElementById("app")
+);
