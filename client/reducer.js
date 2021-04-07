@@ -2,15 +2,13 @@ function fetchDataAction(data) {
   return { type: "GET_DATA", payload: data };
 }
 
-export function getData() {
-  return function (dispatch, getState) {
-    console.log("fetching");
-    fetch("/todos")
-      .then((response) => response.json())
-      .then((data) => dispatch(fetchDataAction(data)))
-      .catch((err) => console.log(err));
-  };
-}
+export const getData = () => (dispatch, getState) => {
+  console.log("fetching");
+  fetch("/todos")
+    .then((response) => response.json())
+    .then((data) => dispatch(fetchDataAction(data)))
+    .catch((err) => console.log(err));
+};
 
 export const reducer = (state = [], action) => {
   switch (action.type) {
