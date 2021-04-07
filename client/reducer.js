@@ -1,14 +1,14 @@
+function fetchDataAction(data) {
+  return { type: "GET_DATA", payload: data };
+}
+
 export function getData() {
   return function (dispatch, getState) {
     console.log("fetching");
     fetch("/todos")
       .then((response) => response.json())
-      .then((data) => console.log(data));
-    //   .then((data) => {
-    //     //   setTodos(transformData(data));
-    //     dispatch({ type: "GET_DATA", payload: data });
-    //   })
-    //   .catch((err) => console.log(err));
+      .then((data) => dispatch(fetchDataAction(data)))
+      .catch((err) => console.log(err));
   };
 }
 
