@@ -1,9 +1,8 @@
-function fetchDataAction(data) {
-  return { type: "GET_DATA", payload: data };
-}
+import { transformData } from "./index.js";
+
+const fetchDataAction = (data) => ({ type: "GET_DATA", payload: data });
 
 export const getData = () => (dispatch, getState) => {
-  console.log("fetching");
   fetch("/todos")
     .then((response) => response.json())
     .then((data) => dispatch(fetchDataAction(data)))
@@ -13,7 +12,7 @@ export const getData = () => (dispatch, getState) => {
 export const reducer = (state = [], action) => {
   switch (action.type) {
     case "GET_DATA":
-      return action.payload;
+      return transformData(action.payload);
 
     case "SUBMIT":
       return [...state, action.payload];

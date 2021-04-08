@@ -24,7 +24,7 @@ function dateParser(date, direction) {
   }
 }
 
-function transformData(data) {
+export function transformData(data) {
   return data
     .filter((item) => !item.completed)
     .map((item) => ({
@@ -36,6 +36,7 @@ function transformData(data) {
 const ExampleComponent = () => {
   const dispatch = useDispatch();
   useEffect(dispatch(getData), []);
+
   // useEffect(getData(), []);
 
   // function getData() {
