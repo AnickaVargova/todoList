@@ -44,10 +44,10 @@ app.get("/todos", (req, res) => {
 });
 
 app.post("/todos", (req, res) => {
-  if (Math.random() > 0.5) {
-    res.status(500).send();
-    return;
-  }
+  // if (Math.random() > 0.5) {
+  //   res.status(500).send();
+  //   return;
+  // }
 
   let isInArray = false;
   let todoIndex = undefined;
