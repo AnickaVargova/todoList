@@ -10,24 +10,24 @@ const H1 = styled.h1`
   text-align: center;
 `;
 
-function dateParser(date, direction) {
+const dateParser = (date, direction) => {
   if (direction === "fromServer") {
     return `${date.slice(-2)}/${date.slice(-5, -3)}/${date.slice(0, 4)}`;
   } else if (direction === "toServer") {
     return `${date.slice(6)}-${date.slice(3, 5)}-${date.slice(0, 2)}`;
   }
-}
+};
 
-function transformData(data) {
+const transformData = (data) => {
   return data
     .filter((item) => !item.completed)
     .map((item) => ({
       name: item.title,
       date: dateParser(item.date, "fromServer"),
     }));
-}
+};
 
-const ExampleComponent = () => {
+const useValues = () => {
   useEffect(getData, []);
 
   function getData() {
@@ -82,6 +82,12 @@ const ExampleComponent = () => {
         throw new Error("There was a problem posting data.");
       });
   }
+
+  return { todos, onComplete, handleSubmit };
+};
+
+const ExampleComponent = () => {
+  const { todos, onComplete, handleSubmit } = useValues();
 
   return (
     <div>
