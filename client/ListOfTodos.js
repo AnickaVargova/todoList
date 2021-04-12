@@ -21,7 +21,7 @@ const Thead = styled.thead`
 const Checkbox = styled.input`
   margin: auto;
 `;
-const ListOfTodos = ({ todos, complete }) => {
+const ListOfTodos = ({ todos, onComplete }) => {
   return (
     <TodosDiv>
       {todos.length ? (
@@ -41,7 +41,7 @@ const ListOfTodos = ({ todos, complete }) => {
             <Td>
               <Checkbox
                 type="checkbox"
-                onChange={() => complete(todo)}
+                onChange={() => onComplete(todo)}
               ></Checkbox>
             </Td>
           </tr>

@@ -40,7 +40,7 @@ const ExampleComponent = () => {
 
   const [todos, setTodos] = useState([]);
 
-  function complete(todo) {
+  function onComplete(todo) {
     todo.completed = true;
     setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
     fetch("/todos", {
@@ -87,7 +87,7 @@ const ExampleComponent = () => {
     <div>
       <H1>Todo List</H1>
       <Form handleSubmit={handleSubmit} />
-      <ListOfTodos todos={todos} complete={complete} />
+      <ListOfTodos todos={todos} onComplete={onComplete} />
     </div>
   );
 };

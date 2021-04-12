@@ -20,7 +20,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   margin: 10px;
-  &: hover {
+  &:hover {
     border: 2px solid black;
   }
 `;
@@ -36,7 +36,7 @@ const Button = styled.button`
   font-weight: bold;
   text-transform: uppercase;
 
-  &: hover {
+  &:hover {
     border-color: black;
   }
 `;
