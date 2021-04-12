@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { sendData } from "./reducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const TodosDiv = styled.table`
   margin: 30px auto;
@@ -21,7 +23,10 @@ const Thead = styled.thead`
 const Checkbox = styled.input`
   margin: auto;
 `;
-const ListOfTodos = ({ todos, complete }) => {
+const ListOfTodos = () => {
+  const todos = useSelector((state) => state);
+  const dispatch = useDispatch();
+
   return (
     <TodosDiv>
       {todos.length ? (
@@ -41,7 +46,9 @@ const ListOfTodos = ({ todos, complete }) => {
             <Td>
               <Checkbox
                 type="checkbox"
-                onChange={() => complete(todo)}
+                onChange={() => {
+                  dispatch(sendData(todo));
+                }}
               ></Checkbox>
             </Td>
           </tr>

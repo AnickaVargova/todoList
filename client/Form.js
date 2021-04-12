@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { sendData, getData } from "./reducer";
 
 const FormElement = styled.form`
   text-align: center;
@@ -41,16 +43,28 @@ const Button = styled.button`
   }
 `;
 
-const Form = ({ handleSubmit }) => {
+const Form = () => {
   const [inputText, setInputText] = useState("");
   const [date, setDate] = useState("");
+  const dispatch = useDispatch();
+  const todos = useSelector((state) => state);
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    for (let todo of todos) {
+      if (todo.name === inputText) {
+        alert("This name is already in use. Choose another name.");
+        setInputText("");
+        setDate("");
+        return;
+      }
+    }
+
     if (!inputText || !date) {
       alert("Please complete all the fields.");
     } else {
-      handleSubmit({ name: inputText, date });
+      dispatch(sendData({ name: inputText, date }));
       setInputText("");
       setDate("");
     }

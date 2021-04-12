@@ -44,25 +44,24 @@ app.get("/todos", (req, res) => {
 });
 
 app.post("/todos", (req, res) => {
-  // if (Math.random() > 0.5) {
-  //   res.status(500).send();
-  //   return;
-  // }
-
-  let isInArray = false;
-  let todoIndex = undefined;
-
-  for (let todo of todos) {
-    if (todo.title === req.body.title) {
-      isInArray = true;
-      todoIndex = todos.indexOf(todo);
-    }
+  if (Math.random() > 0.5) {
+    res.status(500).send();
+    return;
   }
 
+  let isInArray = false;
+  for (let todo of todos) {
+    if (
+      todo.title === req.body.title &&
+      todo.date === req.body.date &&
+      !todo.completed
+    ) {
+      isInArray = true;
+      todo.completed = true;
+    }
+  }
   if (!isInArray) {
     todos.push(req.body);
-  } else {
-    todos[todoIndex].completed = req.body.completed;
   }
   res.json(todos);
 });
