@@ -4,9 +4,7 @@ const fetchDataAction = (data) => ({ type: "GET_DATA", payload: data });
 
 const fetchData = (dispatch) => {
   fetch("/todos")
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
       dispatch(fetchDataAction(data));
     })
