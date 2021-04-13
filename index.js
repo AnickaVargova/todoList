@@ -49,19 +49,19 @@ app.post("/todos", (req, res) => {
     return;
   }
 
-  let isInArray = false;
+  todos.push(req.body);
+  res.json(todos);
+});
+
+app.post("/todos/onComplete", (req, res) => {
+  if (Math.random() > 0.5) {
+    res.status(500).send();
+    return;
+  }
   for (let todo of todos) {
-    if (
-      todo.title === req.body.title &&
-      todo.date === req.body.date &&
-      !todo.completed
-    ) {
-      isInArray = true;
+    if (todo.title === req.body.title) {
       todo.completed = true;
     }
-  }
-  if (!isInArray) {
-    todos.push(req.body);
   }
   res.json(todos);
 });

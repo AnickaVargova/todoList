@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { sendData, getData } from "./reducer";
+import { submitTodo, getData } from "./reducer";
 
 const FormElement = styled.form`
   text-align: center;
@@ -22,7 +22,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   margin: 10px;
-  &: hover {
+  &:hover {
     border: 2px solid black;
   }
 `;
@@ -38,7 +38,7 @@ const Button = styled.button`
   font-weight: bold;
   text-transform: uppercase;
 
-  &: hover {
+  &:hover {
     border-color: black;
   }
 `;
@@ -64,7 +64,7 @@ const Form = () => {
     if (!inputText || !date) {
       alert("Please complete all the fields.");
     } else {
-      dispatch(sendData({ name: inputText, date }));
+      dispatch(submitTodo({ name: inputText, date }));
       setInputText("");
       setDate("");
     }

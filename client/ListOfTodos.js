@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { sendData } from "./reducer";
+import { onComplete } from "./reducer";
 import { useDispatch, useSelector } from "react-redux";
 
 const TodosDiv = styled.table`
@@ -48,7 +48,7 @@ const ListOfTodos = () => {
                 checked={false}
                 type="checkbox"
                 onChange={() => {
-                  dispatch(sendData(todo));
+                  dispatch(onComplete(todo));
                 }}
               ></Checkbox>
             </Td>
