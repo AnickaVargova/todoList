@@ -29,6 +29,7 @@ const transformData = (data) => {
 
 const useValues = () => {
   useEffect(getData, []);
+  const [todos, setTodos] = useState([]);
 
   function getData() {
     fetch("/todos")
@@ -37,8 +38,6 @@ const useValues = () => {
         setTodos(transformData(data));
       });
   }
-
-  const [todos, setTodos] = useState([]);
 
   function onComplete(todo) {
     todo.completed = true;
@@ -53,6 +52,7 @@ const useValues = () => {
     })
       .then((response) => response.json())
       .catch((err) => {
+        setTodos((prevTodos) => [...prevTodos, todo]);
         alert("Sorry, there was a problem while posting data.");
         throw new Error("There was a problem posting data.");
       });
