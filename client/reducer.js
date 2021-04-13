@@ -5,13 +5,11 @@ const fetchDataAction = (data) => ({ type: "GET_DATA", payload: data });
 const fetchData = (dispatch) => {
   fetch("/todos")
     .then((response) => {
-      if (!response.ok) {
-        alert("Sorry, there was a problem while posting data.");
-      }
       return response.json();
     })
     .then((data) => dispatch(fetchDataAction(data)))
     .catch((err) => {
+      alert("Sorry, there was a problem while fetching data.");
       console.log(err.message);
     });
 };
@@ -26,13 +24,12 @@ export const sendData = ({ name, date }) => (dispatch) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title: name, date: dateParser(date, "toServer") }),
   })
-    .then((response) => {
-      if (!response.ok) {
-        alert("Sorry, there was a problem while posting data.");
-      }
-      return response.json();
-    })
-    .then(() => fetchData(dispatch));
+    .then((response) => response.json())
+    .then(() => fetchData(dispatch))
+    .catch((err) => {
+      alert("Sorry, there was a problem while posting data.");
+      console.log(err.message);
+    });
 };
 
 export const reducer = (state = [], action) => {
