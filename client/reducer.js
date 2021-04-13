@@ -7,7 +7,9 @@ const fetchData = (dispatch) => {
     .then((response) => {
       return response.json();
     })
-    .then((data) => dispatch(fetchDataAction(data)))
+    .then((data) => {
+      dispatch(fetchDataAction(data));
+    })
     .catch((err) => {
       alert("Sorry, there was a problem while fetching data.");
       console.log(err.message);
@@ -27,6 +29,7 @@ export const sendData = ({ name, date }) => (dispatch) => {
     .then((response) => response.json())
     .then(() => fetchData(dispatch))
     .catch((err) => {
+      fetchData(dispatch);
       alert("Sorry, there was a problem while posting data.");
       console.log(err.message);
     });

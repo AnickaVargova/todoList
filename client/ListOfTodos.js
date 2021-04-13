@@ -45,6 +45,7 @@ const ListOfTodos = () => {
             <Td>{todo.date}</Td>
             <Td>
               <Checkbox
+                checked={false}
                 type="checkbox"
                 onChange={() => {
                   dispatch(sendData(todo));
