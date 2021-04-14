@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { submitTodo, getData } from "./reducer";
+import { submitTodo } from "./reducer";
 import { normalizeDate, validateName } from "./utils";
 
 const FormElement = styled.form`
@@ -46,12 +46,14 @@ const Button = styled.button`
 
 const Form = () => {
   const [inputText, setInputText] = useState("");
+  const [dateInput, setDateInput] = useState("");
   const [date, setDate] = useState("");
   const dispatch = useDispatch();
   const todos = useSelector((state) => state);
 
   const submitHandler = (e) => {
     e.preventDefault();
+    setDateInput("");
     if (!inputText || !date) {
       alert("Please complete all the fields.");
     } else {
@@ -80,8 +82,11 @@ const Form = () => {
           <Label>Date:</Label>
           <Input
             type="date"
+            //format differs according to browser locale; cannot be parsed by normalizeDate function
+            value={dateInput}
             onChange={(e) => {
               setDate(normalizeDate(e.target.value));
+              setDateInput(e.target.value);
             }}
           />
         </div>

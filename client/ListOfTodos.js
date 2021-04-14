@@ -48,7 +48,7 @@ const ListOfTodos = () => {
                 checked={false}
                 type="checkbox"
                 onChange={() => {
-                  dispatch(onComplete(todo));
+                  dispatch(onComplete(todo.name));
                 }}
               ></Checkbox>
             </Td>
