@@ -45,11 +45,13 @@ const Button = styled.button`
 
 const Form = ({ handleSubmit }) => {
   const [inputText, setInputText] = useState("");
+  const [dateInput, setDateInput] = useState("");
   const [date, setDate] = useState("");
   const todos = useValues().todos;
 
   const submitHandler = (e) => {
     e.preventDefault();
+    setDateInput("");
     if (!inputText || !date) {
       alert("Please complete all the fields.");
     } else {
@@ -78,8 +80,11 @@ const Form = ({ handleSubmit }) => {
           <Label>Date:</Label>
           <Input
             type="date"
+            //format differs according to browser locale; cannot be parsed by normalizeDate function
+            value={dateInput}
             onChange={(e) => {
               setDate(normalizeDate(e.target.value));
+              setDateInput(e.target.value);
             }}
           />
         </div>
