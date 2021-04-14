@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useValues } from "./index.js";
+import { normalizeDate, validateName } from "./utils.js";
 
 const FormElement = styled.form`
   text-align: center;
@@ -44,6 +46,7 @@ const Button = styled.button`
 const Form = ({ handleSubmit }) => {
   const [inputText, setInputText] = useState("");
   const [date, setDate] = useState("");
+  const todos = useValues().todos;
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -64,19 +67,19 @@ const Form = ({ handleSubmit }) => {
           <Input
             type="text"
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={(e) => {
+              //???
+              validateName(e.target.value, todos);
+              setInputText(e.target.value);
+            }}
           />
         </div>
         <div>
           <Label>Date:</Label>
           <Input
-            type="text"
-            pattern="[0-3][0-9]/[0-1][0-9]/202[1-9]"
-            placeholder="dd/mm/yyyy"
-            size={10}
-            value={date}
+            type="date"
             onChange={(e) => {
-              setDate(e.target.value);
+              setDate(normalizeDate(e.target.value));
             }}
           />
         </div>

@@ -4,30 +4,14 @@ import Form from "./Form.js";
 import ListOfTodos from "./ListOfTodos.js";
 import "./fake-hmr";
 import styled from "styled-components";
+import { transformData, dateParser, validateName } from "./utils";
 
 const H1 = styled.h1`
   color: purple;
   text-align: center;
 `;
 
-const dateParser = (date, direction) => {
-  if (direction === "fromServer") {
-    return `${date.slice(-2)}/${date.slice(-5, -3)}/${date.slice(0, 4)}`;
-  } else if (direction === "toServer") {
-    return `${date.slice(6)}-${date.slice(3, 5)}-${date.slice(0, 2)}`;
-  }
-};
-
-const transformData = (data) => {
-  return data
-    .filter((item) => !item.completed)
-    .map((item) => ({
-      name: item.title,
-      date: dateParser(item.date, "fromServer"),
-    }));
-};
-
-const useValues = () => {
+export const useValues = () => {
   useEffect(getData, []);
   const [todos, setTodos] = useState([]);
 
@@ -39,33 +23,34 @@ const useValues = () => {
       });
   }
 
-  function onComplete(todo) {
-    todo.completed = true;
-    setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
-    fetch("/todos", {
+  function onComplete(inputTodo) {
+    const todosBeforeComplete = [...todos];
+
+    //?? nově na frontendu není u todos vlastnost completed, je jen na backendu.
+    //předchozí stav:
+    // todo.completed = true;
+    // setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
+
+    setTodos((prevTodos) =>
+      prevTodos.filter((todo) => todo.name !== inputTodo.name)
+    );
+    fetch("/todos/onComplete", {
       method: "POST",
       body: JSON.stringify({
-        title: todo.name,
-        completed: todo.completed,
+        title: inputTodo.name,
       }),
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => response.json())
       .catch((err) => {
-        setTodos((prevTodos) => [...prevTodos, todo]);
+        setTodos(todosBeforeComplete);
         alert("Sorry, there was a problem while posting data.");
         throw new Error("There was a problem posting data.");
       });
   }
 
   function handleSubmit({ name, date }) {
-    for (let todo of todos) {
-      if (todo.name === name) {
-        alert("This name is already in use. Choose another name.");
-        return;
-      }
-    }
-
+    if (!validateName(name, todos)) return;
     setTodos((prevTodos) => [...prevTodos, { name, date }]);
     fetch("/todos", {
       method: "POST",
