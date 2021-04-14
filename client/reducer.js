@@ -25,7 +25,7 @@ export const onComplete = (name) => (dispatch, getState) => {
     body: JSON.stringify({ title: name }),
   })
     .then((response) => response.json())
-    .catch((err) => {
+    .catch(() => {
       dispatch(getDataAction(todosBeforeComplete));
       alert("Sorry, there was a problem while posting data.");
       throw new Error("There was a problem posting data.");
@@ -42,7 +42,7 @@ export const submitTodo = ({ name, date }) => (dispatch, getState) => {
     body: JSON.stringify({ title: name, date: dateParser(date, "toServer") }),
   })
     .then((response) => response.json())
-    .catch((err) => {
+    .catch(() => {
       dispatch(removeAction(name));
       alert("Sorry, there was a problem while posting data.");
       throw new Error("There was a problem posting data.");
