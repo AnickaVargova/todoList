@@ -1,4 +1,5 @@
 import { transformData, dateParser } from "./index.js";
+import { validateName } from "./utils";
 
 const fetchDataAction = (data) => ({ type: "GET_DATA", payload: data });
 
@@ -34,6 +35,9 @@ export const onComplete = ({ name, date }) => (dispatch) => {
 };
 
 export const submitTodo = ({ name, date }) => (dispatch) => {
+  if (!validateName(name, todos)) return;
+
+  //todos!
   fetch("./todos", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

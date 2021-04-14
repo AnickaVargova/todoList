@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { submitTodo, getData } from "./reducer";
+import { normalizeDate, validateName } from "./utils";
 
 const FormElement = styled.form`
   text-align: center;
@@ -51,16 +52,6 @@ const Form = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
-    for (let todo of todos) {
-      if (todo.name === inputText) {
-        alert("This name is already in use. Choose another name.");
-        setInputText("");
-        setDate("");
-        return;
-      }
-    }
-
     if (!inputText || !date) {
       alert("Please complete all the fields.");
     } else {
@@ -78,19 +69,19 @@ const Form = () => {
           <Input
             type="text"
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={(e) => {
+              //???
+              validateName(e.target.value, todos);
+              setInputText(e.target.value);
+            }}
           />
         </div>
         <div>
           <Label>Date:</Label>
           <Input
-            type="text"
-            pattern="[0-3][0-9]/[0-1][0-9]/202[1-9]"
-            placeholder="dd/mm/yyyy"
-            size={10}
-            value={date}
+            type="date"
             onChange={(e) => {
-              setDate(e.target.value);
+              setDate(normalizeDate(e.target.value));
             }}
           />
         </div>
