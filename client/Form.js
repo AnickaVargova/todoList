@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useValues } from "./index.js";
 import { normalizeDate, validateName } from "./utils.js";
 
 const FormElement = styled.form`
@@ -43,11 +42,10 @@ const Button = styled.button`
   }
 `;
 
-const Form = ({ handleSubmit }) => {
+const Form = ({ handleSubmit, todos }) => {
   const [inputText, setInputText] = useState("");
   const [dateInput, setDateInput] = useState("");
   const [date, setDate] = useState("");
-  const todos = useValues().todos;
 
   const submitHandler = (e) => {
     e.preventDefault();

@@ -77,7 +77,7 @@ const ExampleComponent = () => {
   return (
     <div>
       <H1>Todo List</H1>
-      <Form handleSubmit={handleSubmit} />
+      <Form todos={todos} handleSubmit={handleSubmit} />
       <ListOfTodos todos={todos} onComplete={onComplete} />
     </div>
   );
