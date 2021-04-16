@@ -26,15 +26,10 @@ export const useValues = () => {
   function onComplete(inputTodo) {
     const todosBeforeComplete = [...todos];
 
-    //?? nově na frontendu není u todos vlastnost completed, je jen na backendu.
-    //předchozí stav:
-    // todo.completed = true;
-    // setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
-
     setTodos((prevTodos) =>
       prevTodos.filter((todo) => todo.name !== inputTodo.name)
     );
-    fetch("/todos/onComplete", {
+    fetch("/todos/complete", {
       method: "POST",
       body: JSON.stringify({
         title: inputTodo.name,
@@ -42,7 +37,7 @@ export const useValues = () => {
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => response.json())
-      .catch((err) => {
+      .catch(() => {
         setTodos(todosBeforeComplete);
         alert("Sorry, there was a problem while posting data.");
         throw new Error("There was a problem posting data.");
@@ -50,7 +45,10 @@ export const useValues = () => {
   }
 
   function handleSubmit({ name, date }) {
-    if (!validateName(name, todos)) return;
+    if (validateName(name, todos)) {
+      alert("This name is already in use. Choose another name.");
+      return;
+    }
     setTodos((prevTodos) => [...prevTodos, { name, date }]);
     fetch("/todos", {
       method: "POST",
@@ -61,7 +59,7 @@ export const useValues = () => {
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => response.json())
-      .catch((err) => {
+      .catch(() => {
         setTodos((prevtodos) => prevtodos.filter((todo) => todo.name !== name));
         alert("Sorry, there was a problem while posting data.");
         throw new Error("There was a problem posting data.");
@@ -77,7 +75,7 @@ const ExampleComponent = () => {
   return (
     <div>
       <H1>Todo List</H1>
-      <Form todos={todos} handleSubmit={handleSubmit} />
+      <Form handleSubmit={handleSubmit} />
       <ListOfTodos todos={todos} onComplete={onComplete} />
     </div>
   );

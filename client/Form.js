@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { normalizeDate, validateName } from "./utils.js";
+import { normalizeDate } from "./utils.js";
 
 const FormElement = styled.form`
   text-align: center;
@@ -42,20 +42,18 @@ const Button = styled.button`
   }
 `;
 
-const Form = ({ handleSubmit, todos }) => {
+const Form = ({ handleSubmit }) => {
   const [inputText, setInputText] = useState("");
   const [dateInput, setDateInput] = useState("");
-  const [date, setDate] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
     setDateInput("");
-    if (!inputText || !date) {
+    if (!inputText || !dateInput) {
       alert("Please complete all the fields.");
     } else {
-      handleSubmit({ name: inputText, date });
+      handleSubmit({ name: inputText, date: normalizeDate(dateInput) });
       setInputText("");
-      setDate("");
     }
   };
 
@@ -68,8 +66,6 @@ const Form = ({ handleSubmit, todos }) => {
             type="text"
             value={inputText}
             onChange={(e) => {
-              //???
-              validateName(e.target.value, todos);
               setInputText(e.target.value);
             }}
           />
@@ -81,7 +77,6 @@ const Form = ({ handleSubmit, todos }) => {
             //format differs according to browser locale; cannot be parsed by normalizeDate function
             value={dateInput}
             onChange={(e) => {
-              setDate(normalizeDate(e.target.value));
               setDateInput(e.target.value);
             }}
           />
