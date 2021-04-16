@@ -22,11 +22,5 @@ export const transformData = (data) => {
 };
 
 export const validateName = (input, todos) => {
-  for (let todo of todos) {
-    if (todo.name === input) {
-      alert("This name is already in use. Choose another name.");
-      return false;
-    }
-  }
-  return true;
+  return todos.find((todo) => todo.name === input);
 };

@@ -53,7 +53,7 @@ app.post("/todos", (req, res) => {
   res.json(todos);
 });
 
-app.post("/todos/onComplete", (req, res) => {
+app.post("/todos/complete", (req, res) => {
   if (Math.random() > 0.5) {
     res.status(500).send();
     return;

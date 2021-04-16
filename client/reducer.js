@@ -19,7 +19,7 @@ export const fetchData = () => (dispatch) => {
 export const onComplete = (name) => (dispatch, getState) => {
   const todosBeforeComplete = getState();
   dispatch(removeAction(name));
-  fetch("./todos/onComplete", {
+  fetch("./todos/complete", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title: name }),
@@ -33,7 +33,10 @@ export const onComplete = (name) => (dispatch, getState) => {
 };
 
 export const submitTodo = ({ name, date }) => (dispatch, getState) => {
-  if (!validateName(name, getState())) return;
+  if (validateName(name, getState())) {
+    alert("This name is already in use. Choose another name.");
+    return;
+  }
   dispatch(addAction({ name, date }));
 
   fetch("./todos", {
